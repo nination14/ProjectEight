@@ -1,0 +1,41 @@
+extends layout.pug
+
+block content
+
+    h1 Library Manager
+
+    div(class='search')
+            form(method='action', action='/books/search')
+                label(for='q') Search:
+                input(type='text', name='q', id='q')
+                input(type='submit' value='Go')
+                
+
+    br
+
+    div(class='top-nav')
+        a.button(href='/books/new', class='btn-left') Create New Book
+        a.button(href='/books/page=1', class='btn-right') Home
+    
+    br
+    
+    table
+        thead
+            tr
+                th Title
+                th Author
+                th Genre
+                th Year
+
+            
+        tbody
+            each book in books
+                tr
+                    td
+                        - const url = book.id;
+                        a(href='/books/' + url)= book.title
+                    td= book.author
+                    td= book.genre
+                    td= book.year
+            else
+                p Book is not available
