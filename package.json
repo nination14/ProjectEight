@@ -2,8 +2,9 @@
   "name": "projecteight",
   "version": "0.0.0",
   "private": true,
+  "main": "bin/www",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "npx nodemon ./bin/www"
   },
   "dependencies": {
     "debug": "~2.6.9",
@@ -14,9 +15,10 @@
     "sequelize": "^5.19.0",
     "sqlite3": "^4.1.0"
   },
-  "main": "app.js",
   "devDependencies": {
-    "@types/express": "^4.17.1"
+    "@types/express": "^4.17.1",
+    "nodemon": "^1.19.2",
+    "sequelize-cli": "^5.5.1"
   },
   "author": "",
   "license": "ISC",

@@ -3,31 +3,15 @@ const router = express.Router();
 const Book = require("../models").Book;
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: 'library.db'
-});
 
 /* All book listing with library name  */
 router.get("/", async (req, res, next) => {
   try {
     const booksPerPage = 5;
-    const query = req.query.query ? req.query.query : "";
-    const numPages = await Book.getNumPages(query, booksPerPage);
-    const activePage = req.query.page ? parseInt(req.query.page): (numPages === 0 ? 0: 1);
-    if (activePage > numPages || activePage < 0) {
-      return next();
-    }
-    const books = await Book.findByQueryAndPagination(
-      query,
-      booksPerPage,
-      activePage
+    const books = await Book.findAll(
     );
     res.locals.books = books;
-    res.locals.title = "Titus's Library";
-    res.locals.pages = numPages;
-    res.locals.query = query;
-    res.locals.activePage = activePage;
+    res.locals.title = "Ahirina's Library";
     res.render("index");
   } catch (err) {
     return next(err);
@@ -84,7 +68,7 @@ router.post('/new', function(req, res, next) {
 });
 
 router.get('/new', function(req, res) {
-  res.render("new", {book: Book.build(), title: "New Book"});
+  res.render("new-book", {book: Book.build(), title: "New Book"});
 });
 
 /* Edit book */
@@ -165,7 +149,7 @@ router.post('/:id/delete', function (req, res, next) {
     if (book) {
       return book.destroy();
     } else {
-      res.send(404);
+      res.render('page-not-found');
     }
   }).then(() => {
     res.redirect('/books');
