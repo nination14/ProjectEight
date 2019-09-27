@@ -3,6 +3,11 @@ const router = express.Router();
 const Book = require("../models").Book;
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+const sequelize = new Sequelize({
+  dialect: 'sqlite',
+  storage: 'library.db'
+
+})
 
 /* All book listing with library name  */
 router.get("/", async (req, res, next) => {
@@ -54,7 +59,7 @@ router.post('/new', function(req, res, next) {
     res.redirect("/books/" + book.id);
   }).catch(function(err){
     if(err.name === 'SequelizeValidationError') {
-      res.render("new", {
+      res.render("new-book", {
         book: Book.build(req.body), 
         title: "New Book",
         errors: err.errors
@@ -105,12 +110,12 @@ router.get('/:id', function(req, res, next) {
     if (book) {
       res.render('show', { book, title: book.title });
     } else {
-      res.send(404);
+      res.render('page-not-found')
       console.log('This id does not exist. Please try again.');
     }
   }).catch(function(err){
-    res.send(500);
-    res.render('page-not-found');
+    res.send(500,err);
+    res.render('error');
   });
 });
 
