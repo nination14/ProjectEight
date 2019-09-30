@@ -110,7 +110,7 @@ router.get('/:id', function(req, res, next) {
     if (book) {
       res.render('show', { book, title: book.title });
     } else {
-      res.render('page-not-found')
+      res.render('error')
       console.log('This id does not exist. Please try again.');
     }
   }).catch(function(err){
@@ -154,7 +154,7 @@ router.post('/:id/delete', function (req, res, next) {
     if (book) {
       return book.destroy();
     } else {
-      res.render('page-not-found');
+      res.render('error');
     }
   }).then(() => {
     res.redirect('/books');
